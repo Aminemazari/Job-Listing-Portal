@@ -6,7 +6,10 @@ import {
   MDBBtn,
   MDBIcon,
   MDBInput,
-  MDBCheckbox
+  MDBCheckbox,
+  MDBCardBody,
+  MDBCard,
+
 }
 from 'mdb-react-ui-kit';
 
@@ -18,15 +21,18 @@ function LogIn() {
         width:"100%",
         height:"100vh",
     }}>
-    <MDBContainer fluid className="p-3 my-4">
+     <MDBContainer fluid className="p-3 my-4">
+
+        <MDBCard className='text-black m-5 ' style={{borderRadius: '25px'}}>
+        <MDBCardBody>
       <MDBRow>
-        <MDBCol col='10' md='6'>
-          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg" class="img-fluid" alt="Phone image" />
+      <MDBCol md='10' lg='6' className='d-flex align-items-center'>
+          <img src="https://i0.wp.com/imgaston.tech/wp-content/uploads/2022/07/Bitcoin-mining.png?w=800&ssl=1" class="img-fluid" alt="Phone image" />
         </MDBCol>
 
         <MDBCol col='3' md='4'>
 
-          <MDBInput wrapperClass='mb-4' label='Email address' id='formControlLg' type='email' size="lg"/>
+          <MDBInput wrapperClass='mb-4 mt-4' label='Email address' id='formControlLg' type='email' size="lg"/>
           <MDBInput wrapperClass='mb-2' label='Password' id='formControlLg' type='password' size="lg"/>
 
 
@@ -34,18 +40,16 @@ function LogIn() {
             <a href="!#">Forgot password?</a>
           </div>
 
-          <MDBBtn className="mb-1 w-100" size="lg">Sign in</MDBBtn>
+          <MDBBtn className="mb-3 w-100" size="lg">Sign in</MDBBtn>
 
-          <div className="divider d-flex align-items-center justify-content-center my-4">
-            <p className="text-center fw-bold mx-3 mb-0">OR</p>
-          </div>
+     
 
-          <MDBBtn className="mb-2 w-100" size="lg" style={{backgroundColor: '#dd4b39'}}>
+          <MDBBtn className="mb-3 w-100" size="lg" style={{backgroundColor: '#dd4b39'}}>
                 <MDBIcon fab icon="google" className="mx-2"/>
                 Continue with google
               </MDBBtn>
 
-          <MDBBtn className="mb-4 w-100" size="lg" style={{backgroundColor: '#55acee'}}>
+          <MDBBtn className="mb-3 w-100" size="lg" style={{backgroundColor: '#55acee'}}>
             <MDBIcon fab icon="linkedin" className="mx-2"/>
             Continue with Linkedin
           </MDBBtn>
@@ -59,8 +63,11 @@ function LogIn() {
         </MDBCol>
 
       </MDBRow>
-
+      </MDBCardBody>
+      </MDBCard>
     </MDBContainer>
+   
+   
     </div>
   );
 }
