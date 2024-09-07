@@ -2,7 +2,7 @@
     font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   }
   
-  .OTP {
+  .ForgotPassword {
     background-color: white;
     min-height: 100vh;
     display: flex;
@@ -15,7 +15,7 @@
     z-index: 9999; 
   }
   
-  .cardOTP{
+  .card{
     background-color: #ffffff;
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.15);
     padding: 3rem;
@@ -25,15 +25,15 @@
     transform: scale(0.9); /* Start slightly smaller */
     transition: transform 0.3s ease; 
   }
-  .OTP.show {
+  .ForgotPassword.show {
     opacity: 1;
   }
   
-  .OTP.show .cardOTP {
+  .ForgotPassword .show .card {
     transform: scale(1); /* Scale to normal size */
   }
   
-  .cardOTP > h2 {
+  .card > h2 {
     text-align: center;
     margin: 0 0 2rem;
   }
@@ -112,4 +112,20 @@
     font-weight: 400;
     line-height: 16px;
   
+}
+.notVisible{
+    display: none;
+}
+.visible{
+    display: block;
+}
+.restPassword{
+    background-color: white;
+    min-height: 100vh;
+    display: flex;
+    gap: 2rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Initially hidden */
+ 
 }

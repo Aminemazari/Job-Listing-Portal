@@ -21,16 +21,21 @@ function SignUp() {
         <div style={{
             display: 'flex',
             alignItems: "center",
+            justifyContent:"center",
             width: "100%",
             height: "100vh",
-            overflow:"hidden"
+            overflow:"hidden",
+            background:"rgb(243, 242, 241)"
         }}>
-            <MDBContainer fluid className=" pb-0 my-4 " >
+            <MDBContainer fluid className=" pb-0 my-4" style={{
+                display: 'flex',
+                alignItems: "center",
+                justifyContent:"center",}}  >
 
-                <MDBCard className='text-black m-5  ' style={{ borderRadius: '25px', }}>
-                    <MDBCardBody className='p-10'>
+                <MDBCard className='text-black m-5  ' style={{ borderRadius: '25px',maxWidth:"85%" }}>
+                    <MDBCardBody className='p-10' >
                         <MDBRow>
-                            <MDBCol md='10' lg='5' className='order-2 order-lg-1 d-flex flex-column mt-2'>
+                            <MDBCol md='10' lg='5' className='order-2 order-lg-1 d-flex flex-column  mt-2'>
                             <p style={{ fontSize: '2rem', fontWeight: 'bold', textAlign: 'center', margin: '5px 0' }}>Sign Up</p>
                                 <div className="d-flex flex-row align-items-center mb-3 ">
                                     <MDBIcon fas icon="user me-3" size='lg' />
@@ -67,7 +72,7 @@ function SignUp() {
                                     />
                                 </div>
 
-                                <MDBBtn className='mb-1 w-100' size='lg' >Register</MDBBtn>
+                                <MDBBtn className='mb-1 w-100' size='lg' >Sign Up</MDBBtn>
                                 <div className="divider d-flex align-items-center justify-content-center my-2">
                                     <p className="text-center fw-bold mx-2 mb-0">OR</p>
                                 </div>
@@ -76,10 +81,14 @@ function SignUp() {
                                     Continue with google
                                 </MDBBtn>
 
-                                <MDBBtn className="mb-4 w-100" size="lg" style={{ backgroundColor: '#55acee' }}>
+                                <MDBBtn className=" w-100" size="lg" style={{ backgroundColor: '#55acee' }}>
                                     <MDBIcon fab icon="linkedin" className="mx-2" />
                                     Continue with Linkedin
                                 </MDBBtn>
+                                <p className="large fw-bold mt-2 pt-1 mb-2" style={{textAlign:"center"}}>
+                                    Already have an account? <a href="/login" className="link-danger" >Sign in here</a>
+                                </p>    
+
 
                             </MDBCol>
 

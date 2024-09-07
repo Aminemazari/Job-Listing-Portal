@@ -4,7 +4,7 @@ import { InputOTP } from "antd-input-otp";
 
 import "./styles.css";
 
-const OTP = () => {
+const OTP = ({onSubmit,OTPValue,ResendCode}) => {
     window.addEventListener('load', () => {
         const overlay = document.querySelector('.OTP');
         overlay.classList.add('show');
@@ -27,8 +27,8 @@ const OTP = () => {
         },
       ]);
     }
-
-    console.log(`OTP: ${otpInteger}`);
+   OTPValue=otpInteger;
+    console.log(`OTP: ${OTPValue}`);
   };
 
   return (
@@ -50,10 +50,12 @@ const OTP = () => {
           >
             <InputOTP autoFocus inputType="numeric" length={6} />
           </Form.Item>
-          <p className="didnt_receive_code2">didn't get a code<a className="didnt_receive_code">Click to resend</a></p>
+          <p className="didnt_receive_code2">didn't get a code<button className="didnt_receive_code" onClick={ResendCode}>Click to resend</button></p>
 
           <Form.Item  noStyle>
-            <Button block htmlType="submit" type="primary" size="large" style={{
+            <Button block htmlType="submit" type="primary" size="large"
+             onClick={onSubmit}
+             style={{
                 maxWidth:"300px",  
             }}>
               Submit
