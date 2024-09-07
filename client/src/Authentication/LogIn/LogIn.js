@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState}from 'react';
 import {
   MDBContainer,
   MDBCol,
@@ -14,6 +14,7 @@ import {
 from 'mdb-react-ui-kit';
 
 function LogIn() {
+  const [password, setPassword] = useState('');
   return (
     <div style={{
         display:'flex',
@@ -21,9 +22,9 @@ function LogIn() {
         width:"100%",
         height:"100vh",
     }}>
-     <MDBContainer fluid className="p-3 my-4">
+     <MDBContainer fluid className="p-3 pb-0 my-4">
 
-        <MDBCard className='text-black m-5 ' style={{borderRadius: '25px'}}>
+        <MDBCard className='text-black m-6 ' style={{borderRadius: '25px'}}>
         <MDBCardBody>
       <MDBRow>
       <MDBCol md='10' lg='6' className='d-flex align-items-center'>
@@ -31,10 +32,24 @@ function LogIn() {
         </MDBCol>
 
         <MDBCol col='3' md='4'>
-
-          <MDBInput wrapperClass='mb-4 mt-4' label='Email address' id='formControlLg' type='email' size="lg"/>
-          <MDBInput wrapperClass='mb-2' label='Password' id='formControlLg' type='password' size="lg"/>
-
+        <p style={{ fontSize: '2rem', fontWeight: 'bold', textAlign: 'center', margin: '20px 0' }}>Sign In</p>
+        {/*<MDBInput wrapperClass='mb-4 mt-4' label='Email address' id='formControlLg' type='email' size="lg"/>*/}
+          <div className="d-flex flex-row align-items-center mb-4 ">
+              <MDBIcon fas icon="envelope me-3" size='lg' />
+              <MDBInput label='Your Email' id='form2' type='email' size="lg" />
+          </div>
+          <div className="d-flex flex-row align-items-center mb-3 ">
+              <MDBIcon fas icon="lock me-3" size='lg' />
+              <MDBInput
+                  label="Password"
+                  id="form3"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  size='lg'
+                  required
+              />
+          </div>
 
           <div className="d-flex justify-content-end mx-2 mb-4">
             <a href="!#">Forgot password?</a>
@@ -58,7 +73,7 @@ function LogIn() {
             justifyContent:"center",
             marginTop:"-10px"
           }}>
-          <p className="large  fw-bold mt-2 pt-1 mb-2">Don't have an account? <a href="#!" className="link-danger">Register</a></p>
+          <p className="large  fw-bold mt-2 pt-1 mb-2">Don't have an account? <a href="/" className="link-danger">Register</a></p>
           </div>
         </MDBCol>
 

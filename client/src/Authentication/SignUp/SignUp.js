@@ -23,13 +23,15 @@ function SignUp() {
             alignItems: "center",
             width: "100%",
             height: "100vh",
+            overflow:"hidden"
         }}>
-            <MDBContainer fluid className=" pb-0 my-4">
+            <MDBContainer fluid className=" pb-0 my-4 " >
 
                 <MDBCard className='text-black m-5  ' style={{ borderRadius: '25px', }}>
-                    <MDBCardBody >
+                    <MDBCardBody className='p-10'>
                         <MDBRow>
                             <MDBCol md='10' lg='5' className='order-2 order-lg-1 d-flex flex-column mt-2'>
+                            <p style={{ fontSize: '2rem', fontWeight: 'bold', textAlign: 'center', margin: '5px 0' }}>Sign Up</p>
                                 <div className="d-flex flex-row align-items-center mb-3 ">
                                     <MDBIcon fas icon="user me-3" size='lg' />
                                     <MDBInput label='Your Name' id='form1' type='text' className='w-100' />
