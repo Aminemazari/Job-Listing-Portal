@@ -1,93 +1,153 @@
-import React,{useState}from 'react';
-import {
-  MDBContainer,
-  MDBCol,
-  MDBRow,
-  MDBBtn,
-  MDBIcon,
-  MDBInput,
-  MDBCardBody,
-  MDBCard,
+import React,{useState,useEffect} from 'react'
+import style from "./style.module.css"
+import Button from '../../component/CTA_Button'
+import Input from '../../component/Input_Fields'
+import Input_Password from "../../component/Input_password"
 
-}
-from 'mdb-react-ui-kit';
+import withGithub from "../assets/withGithub.svg"
+import withGoogle from "../assets/withGoogle.svg"
+import withLinkdln from "../assets/withLinkdln.svg"
+import logo from "../assets/WhiteLogo.svg" 
 
-function LogIn() {
-  const [password, setPassword] = useState('');
+
+import { Navigate, useNavigate } from 'react-router-dom'
+import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
+
+const LogIn = () => {
+  const Navigate=useNavigate();
+  const [animate, setAnimate] = useState(false);
+
+  useEffect(() => {
+      setAnimate(true); // Trigger animation on mount
+  }, []);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [status,setStatus] = useState("");
+  const [loading ,setLoading]= useState(false);
+  const loginClickHandler = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try{
+      const response = await fetch(`${"API_URL"}/api/v2/auth/login`,{
+        method: "POST",
+        headers : new Headers( {  
+          'content-type' : 'application/json',
+        'accept': 'application/json'
+         } ),
+        body: JSON.stringify({
+          email: email,
+          password: password,
+   
+        }),
+      }).then(response => response.json())
+      .then(data => { 
+        if (data.accessToken!=null){
+          localStorage.setItem('accessToken',data.accessToken);
+          fetch(`${"API_URL"}/api/v4/users/currentUser`,{
+            method:"GET",
+            headers:new Headers({  
+              'accept': 'text/plain',
+              'Authorization':`Bearer ${data.accessToken}`,
+              
+             } ),
+          })
+          .then(response => response.json())
+          .then(UserData => {
+              if (UserData){
+                localStorage.setItem('UserData',JSON.stringify(UserData));
+                Navigate("/home");
+              }
+   
+          })
+          .catch(error =>
+            console.log(error)
+          );
+        
+
+       
+        }
+        else{
+          setStatus("error");
+          setLoading(false);
+        }
+      })
+  
+    
+      }catch (error) { 
+        console.log(error)
+        setLoading(false);
+        setStatus("error");
+       
+      }
+    
+    
+  }
+
+  const handleChangeEmail = (newValue) => {
+    setStatus("");
+    setEmail(newValue);
+  };
+
+  const handleChangePassword = (newValue) => {
+    setStatus("");
+    setPassword(newValue);
+  };
+  const signupClickHandler =(e)=>{
+    e.preventDefault();
+    Navigate("/SignUp")
+  }
+
   return (
-    <div style={{
-        display:'flex',
-        alignItems:"center",
-        width:"100%",
-        height:"100vh",
-        background:"rgb(243, 242, 241)"
-    }}>
-     <MDBContainer fluid className="p-3 pb-0 my-4"style={{
-                display: 'flex',
-                alignItems: "center",
-                justifyContent:"center",}} >
+    <>
+      {loading && ( 
+        <Box sx={{ width: '100%' }}>
+        <LinearProgress />
+        </Box>  
 
-        <MDBCard className='text-black m-6 ' style={{borderRadius: '25px',maxWidth:"85%" }}>
-        <MDBCardBody>
-      <MDBRow>
-      <MDBCol md='10' lg='6' className='d-flex align-items-center'>
-          <img src="https://i0.wp.com/imgaston.tech/wp-content/uploads/2022/07/Bitcoin-mining.png?w=800&ssl=1" class="img-fluid" alt="Phone image" />
-        </MDBCol>
+      )}
+    <div className={`${style.hero} ${animate ? style.animate : ''}`}>
+       
+      <section className={style.textSide}>
+       
+         <div className={style.connection}>
+          <h1 className={style.TeamUp_connects}> HireMe place to find your futer job</h1>
+          <p className={style.dont_have_account}>Don't have an account yet? Sign Up Here</p>
+         <Button text={"Sign Up"} onclick={signupClickHandler}></Button>
+         </div>
+      </section>
 
-        <MDBCol md='10' lg='5'>
-        <p style={{ fontSize: '2rem', fontWeight: 'bold', textAlign: 'center', margin: '20px 0' }}>Sign In</p>
-        {/*<MDBInput wrapperClass='mb-4 mt-4' label='Email address' id='formControlLg' type='email' size="lg"/>*/}
-          <div className="d-flex flex-row align-items-center mb-4 ">
-              <MDBIcon fas icon="envelope me-3" size='lg' />
-              <MDBInput label='Your Email' id='form2' type='email' size="lg" />
-          </div>
-          <div className="d-flex flex-row align-items-center mb-3 ">
-              <MDBIcon fas icon="lock me-3" size='lg' />
-              <MDBInput
-                  label="Password"
-                  id="form3"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  size='lg'
-                  required
-              />
-          </div>
+      <section className={style.formSide}>
 
-          <div className="d-flex justify-content-end mx-2 mb-4">
-            <a href="/Forgot-Password">Forgot password?</a>
-          </div>
+        <div className={style.form}>
+        <h1 className={style.welcome}>Welcome Back!</h1>
+        <div className={style.Same_input}>
+          <p className={style.enter_Data}>Enter your email</p>
+         <Input placeHolder={"eg.moha riade17@gmail.com"} Status={status} inputValue={email} onInputChange={handleChangeEmail} ></Input>
+        </div>
+        <div className={style.Same_input}>
+          <p className={style.enter_Data}>Enter your password</p>
+          <Input_Password  Status={status} inputValue={password} onInputChange={handleChangePassword}></Input_Password>
+          <a href='/forgotpassword' className={style.informationHolder}>Forgot password?</a>
+          
+        </div>
+       
+        <Button text={"LOG IN"}  onclick={loginClickHandler}></Button>
+        <p className={style.or}>Or continue With</p>
 
-          <MDBBtn className="mb-2 w-100" size="lg">Sign in</MDBBtn>
+        <div className={style.socialMedia}>
+          <button className={style.socialImag}><img src={withGoogle} ></img></button>
+          <button className={style.socialImag}> <img src={withGithub} ></img></button>
+          <button className={style.socialImag}> <img src={withLinkdln} /></button>
+        </div>
 
-          <p className="text-center fw-bold mx-1 mb-1">OR</p>
+        </div>
 
-          <MDBBtn className="mb-3 w-100" size="lg" style={{backgroundColor: '#dd4b39'}}>
-                <MDBIcon fab icon="google" className="mx-2"/>
-                Continue with google
-              </MDBBtn>
-
-          <MDBBtn className="mb-3 w-100" size="lg" style={{backgroundColor: '#55acee'}}>
-            <MDBIcon fab icon="linkedin" className="mx-2"/>
-            Continue with Linkedin
-          </MDBBtn>
-          <div style={{
-            display:"flex",
-            justifyContent:"center",
-            marginTop:"-10px"
-          }}>
-          <p className="large  fw-bold mt-2 pt-1 mb-2">Don't have an account? <a href="/" className="link-danger">Register</a></p>
-          </div>
-        </MDBCol>
-
-      </MDBRow>
-      </MDBCardBody>
-      </MDBCard>
-    </MDBContainer>
-   
-   
+      </section>
     </div>
-  );
+    </>
+  )
 }
 
-export default LogIn;
+export default LogIn

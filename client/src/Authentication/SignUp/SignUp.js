@@ -1,108 +1,165 @@
-import React from 'react';
-import {
-    MDBBtn,
-    MDBContainer,
-    MDBRow,
-    MDBCol,
-    MDBCard,
-    MDBCardBody,
-    MDBCardImage,
-    MDBInput,
-    MDBIcon,
-    MDBCheckbox
+import React, { useState ,useEffect} from 'react'
+import style from "./style.module.css"
+import Secondary_button from '../../component/Secondary_button'
+import Input from "../../component/Input_Fields"
+import Input_password from '../../component/Input_password'
+import google from "../assets/google.svg"
+import github from "../assets/github.svg"
+import linkdln from "../assets/linkdln.svg"
+import classNames from 'classnames';
+import { useNavigate } from 'react-router-dom'
+import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
+import Virification_Form from './Virification_Form'
+
+const SignUp = () => {  
+  const Navigate=useNavigate();
+  const [status,setStatus]=useState("");
+  const [loading ,setLoading]= useState(false);
+  const [isVisibale,setVisibale]=useState(false);
+  const [isVirification_Form,setVirification_Form]=useState(false);
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [animate, setAnimate] = useState(false);
+
+  useEffect(() => {
+      setAnimate(true); // Trigger animation on mount
+  }, []);
+
+const SingUphandleClick = async (e)=>{
+  e.preventDefault();
+  setLoading(true);
+  setVisibale(true);
+  setVirification_Form(false);
+  setLoading(false);
+  try{
+    const response = await fetch(`${"API_URL"}/api/v2/auth/register`,{
+      method: "POST",
+      headers : new Headers( { 
+         'content-type' : 'application/json',
+        } ),
+      body: JSON.stringify({
+        displayName:userName, 
+        email: email,
+        password: password,
+      }),
+    })
+    const statusCode = response.status;
+   if (statusCode===200){
+    setVisibale(true);
+    setVirification_Form(true);
+    setLoading(false);
+   }
+  else{
+    setLoading(false);
+    setStatus("error");
+  }
+    
+
+    }catch (error) { 
+      setLoading(false);
+      setStatus("error");
+    }
+
 }
-    from 'mdb-react-ui-kit';
-import { useState } from 'react';
+const handleChangeEmail = (newValue) => {
+ 
+  setEmail(newValue);
+};
 
-function SignUp() {
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    return (
-        <div style={{
-            display: 'flex',
-            alignItems: "center",
-            justifyContent:"center",
-            width: "100%",
-            height: "100vh",
-            overflow:"hidden",
-            background:"rgb(243, 242, 241)"
-        }}>
-            <MDBContainer fluid className=" pb-0 my-4" style={{
-                display: 'flex',
-                alignItems: "center",
-                justifyContent:"center",}}  >
-
-                <MDBCard className='text-black m-5  ' style={{ borderRadius: '25px',maxWidth:"85%" }}>
-                    <MDBCardBody className='p-10' >
-                        <MDBRow>
-                            <MDBCol md='10' lg='5' className='order-2 order-lg-1 d-flex flex-column  mt-2'>
-                            <p style={{ fontSize: '2rem', fontWeight: 'bold', textAlign: 'center', margin: '5px 0' }}>Sign Up</p>
-                                <div className="d-flex flex-row align-items-center mb-3 ">
-                                    <MDBIcon fas icon="user me-3" size='lg' />
-                                    <MDBInput label='Your Name' id='form1' type='text' className='w-100' />
-                                </div>
-
-                                <div className="d-flex flex-row align-items-center mb-3 ">
-                                    <MDBIcon fas icon="envelope me-3" size='lg' />
-                                    <MDBInput label='Your Email' id='form2' type='email' />
-                                </div>
-
-                                <div className="d-flex flex-row align-items-center mb-3 ">
-                                    <MDBIcon fas icon="lock me-3" size='lg' />
-                                    <MDBInput
-                                        label="Password"
-                                        id="form3"
-                                        type="password"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        required
-                                    />
-                                </div>
-
-                                <div className="d-flex flex-row align-items-center mb-4 ">
-                                    <MDBIcon fas icon="key me-3" size='lg' />
-                                    <MDBInput
-                                        className={`mb-1 ${password !== confirmPassword && confirmPassword ? 'is-invalid' : ''}`}
-                                        label="Repeat your password"
-                                        id="confirmPassword"
-                                        type="password"
-                                        value={confirmPassword}
-                                        onChange={(e) => setConfirmPassword(e.target.value)}
-                                        required
-                                    />
-                                </div>
-
-                                <MDBBtn className='mb-1 w-100' size='lg' >Sign Up</MDBBtn>
-                                <div className="divider d-flex align-items-center justify-content-center my-2">
-                                    <p className="text-center fw-bold mx-2 mb-0">OR</p>
-                                </div>
-                                <MDBBtn className="mb-2 w-100" size="lg" style={{ backgroundColor: '#dd4b39' }}>
-                                    <MDBIcon fab icon="google" className="mx-2" />
-                                    Continue with google
-                                </MDBBtn>
-
-                                <MDBBtn className=" w-100" size="lg" style={{ backgroundColor: '#55acee' }}>
-                                    <MDBIcon fab icon="linkedin" className="mx-2" />
-                                    Continue with Linkedin
-                                </MDBBtn>
-                                <p className="large fw-bold mt-2 pt-1 mb-2" style={{textAlign:"center"}}>
-                                    Already have an account? <a href="/login" className="link-danger" >Sign in here</a>
-                                </p>    
+const handleChangePassword = (newValue) => {
+ 
+  setPassword(newValue);
+};
+const handleChangeUserName = (newValue) => {
+  setUserName(newValue);
+};
 
 
-                            </MDBCol>
 
-                            <MDBCol md='10' lg='6' className='order-1 order-lg-2 d-flex align-items-center'>
-                                <MDBCardImage src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp' fluid />
-                            </MDBCol>
 
-                        </MDBRow>
-                    </MDBCardBody>
-                </MDBCard>
 
-            </MDBContainer>
+
+
+
+
+
+
+
+
+const isSignUpForm = classNames(
+  style.form,
+  { [style.singUpFormNotVisible]: isVisibale },
+);
+
+const isButton =
+classNames(
+  style.visibilityOfSignUpButton,
+  { [style.ButtonNotVisibale]: isVisibale },
+);
+
+  const LogInhandleClick =(e)=>{
+    e.preventDefault();
+    Navigate("/login");
+  }
+
+  return (
+    <>
+          {loading && ( 
+        <Box sx={{ width: '100%' }}>
+        <LinearProgress />
+        </Box>  
+
+      )}
+    <div className={`${style.hero} ${animate ? style.animate : ''}`}>
+      <section className={style.textSide}>  
+        <main className={style.description}>
+           <h1 className={style.GrowYourTeam}>Achieve your dreams</h1>
+          <p className={style.dont_have_account}>Already Have An Account ! Sign In Here</p>
+          <mark className={isButton}>
+            <Secondary_button border={true} text={"LOG IN"} onclick={LogInhandleClick}></Secondary_button>
+          </mark>
+        </main>
+      </section>
+      <section className={style.formSide}>
+        {/* the form that will shows when you enter the sign up page */}
+     <main className={isSignUpForm}>
+        <h1 className={style.creatYourAccount}>Create Your Account.</h1>
+        <div className={style.Same_input}>
+          <p className={style.enter_Data}>Enter your name</p>
+          <Input placeHolder={"Mazari Amine"} inputValue={userName} onInputChange={handleChangeUserName} Status={status}></Input>
         </div>
-    );
+        <div className={style.Same_input}>
+          <p className={style.enter_Data}>Enter your email</p>
+          <Input placeHolder={"eg.mazariamine095@gmail.com"} inputValue={email} onInputChange={handleChangeEmail} Status={status}></Input>
+        </div>
+        <div className={style.Same_input}>
+          <p className={style.enter_Data}>Enter your password</p>
+          <Input_password InputValue={password} onInputChange={handleChangePassword}  Status={status}></Input_password>
+        </div>
+       
+        <Secondary_button text={"SIGN UP"} border={false} onclick={SingUphandleClick}></Secondary_button>
+
+        <p className={style.or}>Or continue With</p>
+
+        <section className={style.socialMedia}>
+          <button className={style.socailMediaButton}>  <img src={google}  /></button>
+          <button className={style.socailMediaButton}> <img src={linkdln}  /></button>
+          <button className={style.socailMediaButton}> <img src={github}  /></button>
+        </section>
+
+     </main>
+       {/* the form that will shows when you click to sign up  */}
+       <Virification_Form confirme={isVisibale} UserEmail={email} password={password}/>
+    
+     
+   
+
+      </section>
+    </div>
+    </>
+  )
 }
 
-export default SignUp;
+export default SignUp

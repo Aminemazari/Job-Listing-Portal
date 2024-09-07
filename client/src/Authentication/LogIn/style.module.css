@@ -1,131 +1,165 @@
-:root {
-    font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  }
-  
-  .ForgotPassword {
-    background-color: white;
-    min-height: 100vh;
-    display: flex;
-    gap: 2rem;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    opacity: 0; /* Initially hidden */
-    transition: opacity 0.5s ease; /* Fade in effect */
-    z-index: 9999; 
-  }
-  
-  .card{
-    background-color: #ffffff;
-    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.15);
-    padding: 3rem;
-    min-width: 384px;
-    border-radius: 40px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transform: scale(0.9); /* Start slightly smaller */
-    transition: transform 0.3s ease; 
-  }
-  .ForgotPassword.show {
-    opacity: 1;
-  }
-  
-  .ForgotPassword .show .card {
-    transform: scale(1); /* Scale to normal size */
-  }
-  
-  .card > h2 {
-    text-align: center;
-    margin: 0 0 2rem;
-  }
-  
-  .center-error-message:where(.ant-form-item) .ant-form-item-explain-error {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .input-classname {
-    border-radius: 16px;
-  }
-  
-  .wrapper-classname {
-    gap: 4px;
-    margin-bottom: 24px;
-  }
-  .Enter_Verification_Code_text{
-    color: #000;
-    font-feature-settings: 'liga' off, 'clig' off;
-    
-    /* UI Type/text-5xl/[S] */
-    font-family: "DM Sans";
-    font-size: 30px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 56px; /* 116.667% */
-    letter-spacing: -1px;
-  }
-  .code_sent{
-    color: var(--Neutral-8, #595959);
-    font-feature-settings: 'liga' off, 'clig' off;
-    
-    /* UI Type/text-xl/[R] */
-    font-family: "DM Sans";
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 32px; /* 160% */
-  }
-  .verification_txt{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    gap: 3px;
-    max-width: 450px;
-  }
-.didnt_receive_code{
-    color: var(--Primary-6, black);
-    font-feature-settings: 'liga' off, 'clig' off;
-    font-weight: 600;
-    text-decoration: underline;
-    background-color: transparent;
-    border: none;
+*{
+    margin: 0;
     padding: 0;
 }
-.didnt_receive_code2{
+/* styles.module.css */
+.hero {
     display: flex;
-    gap:3px;
+    height: 100vh; /* Ensure the container covers full viewport height */
+    position: relative; /* Position relative to handle absolute children */
+}
+
+ .formSide,.textSide{
+    flex: 1;
+    display: flex;
     justify-content: center;
-    color: var(--Primary-6, black);
+    align-items: center;
+    position: absolute;
+    height: 100%; /* Full height of the hero */
+    transition: transform 1s ease; /* Smooth transition */
+}
+
+.textSide {
+    background: var(--Main-goten, #FFF);
+    width: 46%;
+    right: 0;
+    transform: translateX(100%); 
+}
+
+.formSide {
+    background: #682DFE;
+    width: 54%;
+    left: 0;
+    transform: translateX(0); 
+
+}
+
+.animate .textSide {
+    transform: translateX(-120%);  /* Move off-screen */
+}
+
+.animate .formSide {
+   
+    transform: translateX(85.2%); /* Move into view */
+}
+.logo{
+    position: absolute;
+    left: 0;
+    top:10px;
+}
+.connection{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width:297px ;
+}
+.TeamUp_connects{
+    color: var(--Main-trunks, #595D62);
+font-feature-settings: 'clig' off, 'liga' off;
+
+/* UI Type/text-4xl/[R] */
+font-family: DM Sans;
+font-size: 40px;
+font-style: normal;
+font-weight: 400;
+line-height: 48px; /* 120% */
+letter-spacing: -0.5px;
+}
+.dont_have_account{
+    color: var(--Main-trunks, #595D62);
+font-feature-settings: 'clig' off, 'liga' off;
+
+/* UI Type/text-lg/[R] */
+font-family: DM Sans;
+font-size: 18px;
+font-style: normal;
+font-weight: 400;
+line-height: 28px; /* 155.556% */
+}
+.form{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    gap: 20px;
+    width: 27.63vw;
+
+}
+.welcome{
+    color: var(--Main-goten, #FFF);
+font-feature-settings: 'clig' off, 'liga' off;
+
+/* UI Type/text-5xl/[S] */
+font-family: DM Sans;
+font-size: 48px;
+font-style: normal;
+font-weight: 700;
+line-height: 56px; /* 116.667% */
+letter-spacing: -1px;
+max-width: 297px;
+}
+.Same_input{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--Size-80, 8px);
+}
+.enter_Data{
+    color: var(--Main-goten, #FFF);
+font-feature-settings: 'clig' off, 'liga' off;
+
+/* UI Type/text-md/[R] */
+font-family: DM Sans;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 24px; /* 150% */
+}
+.informationHolder{
+    border: none;
+    background-color: transparent;
+    color: var(--base, #FFF);
     font-feature-settings: 'liga' off, 'clig' off;
-    margin-top: -10px;
-    padding-bottom: 10px;
-    width: 334px;
-    text-align: end;
-    /* Paragraph/text-xs/[R] */
+    
+    /* Paragraph/text-xs/[R] [L] */
     font-family: Montserrat;
-    font-size: 13px;
+    font-size: 12px;
     font-style: normal;
     font-weight: 400;
-    line-height: 16px;
-  
+    line-height: 16px; /* 133.333% */
+    text-decoration-line: underline;
 }
-.notVisible{
-    display: none;
-}
-.visible{
-    display: block;
-}
-.restPassword{
-    background-color: white;
-    min-height: 100vh;
+.or{
     display: flex;
-    gap: 2rem;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    justify-content: center; /* Initially hidden */
- 
+    width: 100%;
+    color: var(--Main-goten, #FFF);
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    
+    /* UI Type/text-md/[R] */
+    font-family: DM Sans;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px; /* 150% */
+}
+.socialMedia{
+    width: 100%;
+    background-color: transparent;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.socialImag{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    gap: var(--Size-none, 0px);
+    border-radius: var(--Interactive-border-radius---radius-i-sm, 12px);
+  
 }

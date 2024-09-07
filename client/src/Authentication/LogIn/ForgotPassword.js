@@ -1,108 +1,148 @@
 import React from 'react'
 import { useState } from "react";
-import { Button, Form,Input } from "antd";
+import Button from '../../component/CTA_Button'
 import style from "./style.module.css";
-import {
-    MDBContainer,
-    MDBCol,
-    MDBRow,
-    MDBBtn,
-    MDBIcon,
-    MDBInput,
-    MDBCardBody,
-    MDBCard,
-  
-  }
-  from 'mdb-react-ui-kit';
+import styles from "./forgotpassword.module.css"
 import OTP from '../../component/OTP';
+import classNames from 'classnames';
+import Input from '../../component/Input_Fields'
+import Input_Password from "../../component/Input_password"
+import { Navigate } from 'react-router-dom';
 const ForgotPassword = () => {
-    window.addEventListener('load', () => {
-        const overlay = document.querySelector(`.${style.ForgotPassword}`);
-        overlay.classList.add(style.show);
-      });
-  const [form] = Form.useForm();
+
   const [OTPvisible,setOtp]=useState(false);
   const [emailCardVisible,setECard]=useState(true);
   const [resetCardVisible,setReset]=useState(false);
+  const [email,setEmail]=useState("");
+  const EmailClickHandler = async (e) => {
+    e.preventDefault();
+    setOtp(true)
+    setECard(false)
+
+
+    try{
+      const response = await fetch(`${"API_URL"}/api/v2/auth/login`,{
+        method: "POST",
+        headers : new Headers( {  
+          'content-type' : 'application/json',
+        'accept': 'application/json'
+         } ),
+        body: JSON.stringify({
+          email: email,
+          password: "password",
+   
+        }),
+      }).then(response => response.json())
+      .then(data => { 
+        if (data.accessToken!=null){
+          localStorage.setItem('accessToken',data.accessToken);
+          fetch(`${"API_URL"}/api/v4/users/currentUser`,{
+            method:"GET",
+            headers:new Headers({  
+              'accept': 'text/plain',
+              'Authorization':`Bearer ${data.accessToken}`,
+              
+             } ),
+          })
+          .then(response => response.json())
+          .then(UserData => {
+              if (UserData){
+                localStorage.setItem('UserData',JSON.stringify(UserData));
+                Navigate("/home");
+              }
+   
+          })
+          .catch(error =>
+            console.log(error)
+          );
+        
+
+       
+        }
+        else{
+      
+        }
+      })
+  
+    
+      }catch (error) { 
+        console.log(error)
+
+       
+      }
+    
+    
+  }
+
+
+
+ const codeHandler=()=>{
+  setOtp(false)
+  setReset(true)
+ }
   const submitEmail=()=>{
     setECard(false);
     setOtp(true);
     }
   const submitCode=()=>{
-    console.log("fhdksj")
     setOtp(false);
     setReset(true);
   }
   const submitPassword=()=>{
 
   }
+  const handleChangeEmail = (newValue) => {
+    setEmail(newValue);
+  };
   return (
-    <div>
-       <main className={emailCardVisible ? style.ForgotPassword : style.notVisible}>
-      <section className={style.card}>
-        <div className={style.verification_txt }>
-                <h2 className={style.Enter_Verification_Code_text}>Reset Your Password</h2>
-                <p className={style.code_sent}>Enter your email address and we'll send you instructions to reset your password</p>  
-        </div>
-        <Form form={form}  style={{
-            display:"flex",
-            flexDirection:"column",
-            alignItems:"center"
-        }}>
-          <Form.Item
-         style={{width:"70%"}}
-          > 
-          <MDBInput label='Your Email' id='form2' type='email' size="lg" placeholder='john@exmple.com'/>
-          </Form.Item>
-          <Form.Item  noStyle>
-            <Button block htmlType="submit" type="primary" size="large"
-             onClick={submitEmail}
-             style={{
-                maxWidth:"200px",  
-            }}>
-              Continue
-            </Button>
-          </Form.Item>
-         
+    <div className={styles.hero} >
+       <section className={styles.textSide}>
+    </section>
+     <section className={styles.formSide}>
 
-        </Form>
-      </section>
-    </main>
-    <main className={OTPvisible ? style.visible : style.notVisible}>
-        <OTP onSubmit={submitCode}/>
-    </main>
-    <main className={resetCardVisible ? style.restPassword : style.visible}>
-    <section className={style.card}>
-        <div className={style.verification_txt }>
-                <h2 className={style.Enter_Verification_Code_text}>Create a new password</h2>
-                <p className={style.code_sent}>Please choose a password that hasn't been used before</p>  
-        </div>
-        <Form form={form}  style={{
-            display:"flex",
-            flexDirection:"column",
-            alignItems:"center"
-        }}>
-          <Form.Item
-         style={{width:"70%"}}
-          > 
-          <MDBInput label='New password' id='form2' type='password' size="lg" placeholder='password'/>
-          </Form.Item>
-          <Form.Item  noStyle>
-            <Button block htmlType="submit" type="primary" size="large"
-             onClick={submitPassword}
-             style={{
-                maxWidth:"200px",  
-            }}>
-              Reset password
-            </Button>
-          </Form.Item>
-         
+     <div className={`${style.form} ${!emailCardVisible ? styles.Notvisible : ''}`}>
+        <h1 className={style.welcome}>Reset Your Password</h1>
+        <p className={styles.weveSentACode}>Enter your email address and we'll send you instructions to reset your password</p>
+        <div className={style.Same_input}>
+        <p className={style.enter_Data}>Enter your email</p>
+   
+        <Input placeHolder={"eg.moha riade17@gmail.com"}  inputValue={email} onInputChange={handleChangeEmail} ></Input>
+            </div>
+            <Button text={"Continue"}  onclick={EmailClickHandler}></Button>
+            </div> 
 
-        </Form>
-      </section>
-    </main>
-    
+        
+     <div className={`${style.form} ${!OTPvisible ? styles.Notvisible : ''}`}>
+        <h1 className={style.welcome}>Reset Your Password</h1>
+        <p className={styles.weveSentACode}>We've sent a code to [email address] to verify your account</p> 
+        <div className={style.Same_input}>
+        <p className={style.enter_Data}>Enter PIN Code</p>
+   
+         <OTP/>
+         <button className={style.informationHolder}>Didn't receive a code?</button>
+            </div>
+            <Button text={"Continue"}  onclick={codeHandler}></Button>
+            </div> 
+        <div className={`${style.form} ${!resetCardVisible ? styles.Notvisible : ''}`}>
+        <h1 className={style.welcome}>Reset Your Password</h1>
+        <p className={styles.weveSentACode}>Enter your email address and we'll send you instructions to reset your password</p> 
+        <div className={style.Same_input}>
+        <p className={style.enter_Data}>Enter new password</p>
+   
+        <Input_Password placeHolder={"eg.moha riade17@gmail.com"}  inputValue={email} onInputChange={handleChangeEmail} ></Input_Password>
+     
+            </div>
+            <Button text={"Continue"}  onclick={EmailClickHandler}></Button>
+            </div> 
+
+        </section>
+ 
+        
+   
+
     </div>
+    
+    
   )
 }
 
