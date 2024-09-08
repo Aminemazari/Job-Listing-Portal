@@ -150,7 +150,8 @@ line-height: 24px; /* 150% */
     width: 100%;
     background-color: transparent;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    gap:40px;
     align-items: center;
 }
 .socialImag{

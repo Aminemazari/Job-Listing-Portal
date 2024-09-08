@@ -136,7 +136,8 @@ max-width:297px;
 .socialMedia{
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  gap:40px;
   align-items: center;
 }
 .logo{

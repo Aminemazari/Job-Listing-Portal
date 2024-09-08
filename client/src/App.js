@@ -5,8 +5,19 @@ import SignUp from './Authentication/SignUp/SignUp'
 import Virification_Form from './Authentication/SignUp/Virification_Form.js';
 import ForgotPassword from './Authentication/LogIn/ForgotPassword';
 import { Route, BrowserRouter as Router , Routes } from 'react-router-dom'; 
+import {ConfigProvider} from 'antd';
 function App() {
   return (
+    <>
+    <ConfigProvider
+   theme={{
+     token: {
+       // Seed Token
+       colorPrimary: '#6738DD',
+       // Alias Token
+     },
+   }}
+ >
     <Router>
       
     <Routes>
@@ -18,6 +29,8 @@ function App() {
       <Route path="/forgotpassword" element={<ForgotPassword></ForgotPassword>}/>
       </Routes>
       </Router>
+      </ConfigProvider>
+      </>
   );
 }
 

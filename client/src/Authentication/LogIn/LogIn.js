@@ -3,7 +3,7 @@ import style from "./style.module.css"
 import Button from '../../component/CTA_Button'
 import Input from '../../component/Input_Fields'
 import Input_Password from "../../component/Input_password"
-
+import API_URL from '../../component/API_URL'
 import withGithub from "../assets/withGithub.svg"
 import withGoogle from "../assets/withGoogle.svg"
 import withLinkdln from "../assets/withLinkdln.svg"
@@ -17,73 +17,51 @@ import LinearProgress from '@mui/material/LinearProgress';
 const LogIn = () => {
   const Navigate=useNavigate();
   const [animate, setAnimate] = useState(false);
-
-  useEffect(() => {
-      setAnimate(true); // Trigger animation on mount
-  }, []);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [status,setStatus] = useState("");
   const [loading ,setLoading]= useState(false);
+  
+  useEffect(() => {
+    setAnimate(true); // Trigger animation on mount
+}, []);
   const loginClickHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
 
+    
     try{
-      const response = await fetch(`${"API_URL"}/api/v2/auth/login`,{
+       const response = await fetch(`${API_URL}/api/v1/auth/signIn`,{
         method: "POST",
         headers : new Headers( {  
           'content-type' : 'application/json',
-        'accept': 'application/json'
          } ),
         body: JSON.stringify({
           email: email,
           password: password,
    
         }),
-      }).then(response => response.json())
-      .then(data => { 
-        if (data.accessToken!=null){
-          localStorage.setItem('accessToken',data.accessToken);
-          fetch(`${"API_URL"}/api/v4/users/currentUser`,{
-            method:"GET",
-            headers:new Headers({  
-              'accept': 'text/plain',
-              'Authorization':`Bearer ${data.accessToken}`,
-              
-             } ),
-          })
-          .then(response => response.json())
-          .then(UserData => {
-              if (UserData){
-                localStorage.setItem('UserData',JSON.stringify(UserData));
-                Navigate("/home");
-              }
-   
-          })
-          .catch(error =>
-            console.log(error)
-          );
-        
-
-       
-        }
-        else{
-          setStatus("error");
-          setLoading(false);
-        }
       })
-  
-    
-      }catch (error) { 
-        console.log(error)
+      const statusCode = response.status;
+      if (statusCode===200){
+        Navigate("/")
         setLoading(false);
+       }
+      else{
         setStatus("error");
-       
+        setLoading(false);
       }
-    
-    
-  }
+        
+     
+    }
+      catch(error) {
+
+        setStatus("error");
+        setLoading(false);
+      }
+     
+        
+    }
 
   const handleChangeEmail = (newValue) => {
     setStatus("");
@@ -138,7 +116,6 @@ const LogIn = () => {
 
         <div className={style.socialMedia}>
           <button className={style.socialImag}><img src={withGoogle} ></img></button>
-          <button className={style.socialImag}> <img src={withGithub} ></img></button>
           <button className={style.socialImag}> <img src={withLinkdln} /></button>
         </div>
 

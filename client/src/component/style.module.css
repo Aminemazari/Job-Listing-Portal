@@ -132,3 +132,12 @@
 .Your_account_has_been_verified{
   align-items: center;
 }
+.validationError {
+  color: red; /* Red color */
+  font-family: Montserrat;
+  font-size: 12px;
+  font-style: normal; /* Font style */
+  font-weight: 400; /* Font weight */
+  line-height: 16px; /* Line height */
+ /* Margin above error message */
+}

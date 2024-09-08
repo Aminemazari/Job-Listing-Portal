@@ -11,6 +11,10 @@ import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import Virification_Form from './Virification_Form'
+import API_URL from '../../component/API_URL'
+import { Select, Space } from 'antd';
+import jobImage from "../assets/briefcase-icon.svg";
+import employerImg from "../assets/employment-icon.svg"
 
 const SignUp = () => {  
   const Navigate=useNavigate();
@@ -21,28 +25,33 @@ const SignUp = () => {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role,setRole]=useState("seeker");
   const [animate, setAnimate] = useState(false);
 
   useEffect(() => {
       setAnimate(true); // Trigger animation on mount
   }, []);
 
+  const handleChange = (value) => {
+    console.log(value)
+    setRole(value)
+  };
+
 const SingUphandleClick = async (e)=>{
   e.preventDefault();
   setLoading(true);
-  setVisibale(true);
-  setVirification_Form(false);
-  setLoading(false);
   try{
-    const response = await fetch(`${"API_URL"}/api/v2/auth/register`,{
+    const response = await fetch(`${API_URL}/api/v1/auth/signup`,{
       method: "POST",
       headers : new Headers( { 
          'content-type' : 'application/json',
         } ),
       body: JSON.stringify({
-        displayName:userName, 
+        username:userName, 
         email: email,
         password: password,
+        role:role,
+        confirmPassword:password,
       }),
     })
     const statusCode = response.status;
@@ -138,6 +147,42 @@ classNames(
           <p className={style.enter_Data}>Enter your password</p>
           <Input_password InputValue={password} onInputChange={handleChangePassword}  Status={status}></Input_password>
         </div>
+        <div className={style.Same_input}>
+        <Select
+    defaultValue="seeker"  // Set the default value to "Employer" (or "Job Seeker" if needed)
+    style={{ width: "100%" }}
+    size='large'
+    onChange={handleChange}
+    options={[
+      {
+        value: 'seeker',
+        label: (
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <img 
+              src={jobImage} 
+              alt="Job Seeker"
+              style={{ width: 21, height: 21, marginRight: 8, textAlign: "center" }} 
+            />
+            Job Seeker
+          </div>
+        ),
+      },
+      {
+        value: 'employer',
+        label: (
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <img 
+              src={employerImg} 
+              alt="Employer"
+              style={{ width: 21, height: 21, marginRight: 8, textAlign: "center" }} 
+            />
+            Employer
+          </div>
+        ),
+      },
+    ]}
+  />
+        </div>
        
         <Secondary_button text={"SIGN UP"} border={false} onclick={SingUphandleClick}></Secondary_button>
 
@@ -146,7 +191,6 @@ classNames(
         <section className={style.socialMedia}>
           <button className={style.socailMediaButton}>  <img src={google}  /></button>
           <button className={style.socailMediaButton}> <img src={linkdln}  /></button>
-          <button className={style.socailMediaButton}> <img src={github}  /></button>
         </section>
 
      </main>
