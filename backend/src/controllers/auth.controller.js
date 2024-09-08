@@ -206,9 +206,18 @@ const resendVerificationCode = asyncHandler(async (req, res, next) => {
 		message: "verification code sent to your email",
 	});
 });
+const ensureAuthenticated = (req, res, next) => {
+	if (req.isAuthenticated()) {
+		return next();
+	}
+	res.status(401).json({ msg: "you are not authenticated" });
+};
+
+
 module.exports = {
 	signUpController,
 	codeVerification,
 	signInController,
 	resendVerificationCode,
+	ensureAuthenticated,
 };

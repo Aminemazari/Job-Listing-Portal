@@ -20,24 +20,36 @@ const userSchema = new mongoose.Schema(
 		},
 		password: {
 			type: String,
-			required: [true, "the password is required"],
+			validate: {
+				validator: function (value) {
+					return this.googleId || this.linkedinId || value; // If OAuth, password can be null
+				},
+				message: "The password is required",
+			},
 			minlength: [6, "Too short password"],
 		},
 		role: {
 			type: String,
+			validate: {
+				validator: function (value) {
+					return this.googleId || this.linkedinId || value; // If OAuth, role can be null
+				},
+				message: "The role is required for non-oauth users",
+			},
 			enum: ["employer", "seeker"],
-			required: [true, "The role must be required"],
 		},
 		verifyCode: String,
 		verifyCodeExpire: Number,
-		verifyCodeVerified:Boolean,
+		verifyCodeVerified: Boolean,
+		googleId: String,
+		linkedinId: String,
 	},
 	{
 		timestamps: true,
 	}
 );
 userSchema.pre("save", async function (next) {
-	if (!this.isModified("password")) return next();
+	if (!this.password || !this.isModified("password")) return next();
 	// hashing the password
 	this.password = await bcrypt.hash(this.password, 12);
 	next();

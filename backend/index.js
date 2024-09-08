@@ -1,12 +1,16 @@
 const express = require("express");
-const port = process.env.PORT || 3000;
 const app = express();
-const ApiError = require("./src/utils/apiError");
 const morgan = require("morgan");
-const globalError = require("./src/middlewares/errorMiddleware");
 const cors = require("cors");
+const passport = require("passport");
+
+const globalError = require("./src/middlewares/errorMiddleware");
+const session = require("express-session");
+const ApiError = require("./src/utils/apiError");
 const dbConnection = require("./src/db/connect");
 const authRouter = require("./src/routes/auth.route");
+
+const port = process.env.PORT || 3000;
 // Set Up Global Middleware
 
 // Enable different domain to access your application
@@ -18,9 +22,20 @@ if (process.env.NODE_ENV === "development") {
 	app.use(morgan("dev"));
 	console.log(`mode: ${process.env.NODE_ENV}`);
 }
+app.use(
+	session({
+		secret: process.env.SESSION_SECRET, // Replace with a strong secret key
+		resave: false,
+		saveUninitialized: false,
+		// cookie: { secure: false }, // Set to true if using HTTPS
+	})
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get("/", (req, res) => {
-	res.send("Hello, World!");
+	res.send("Home");
 });
 app.use("/api/v1/auth", authRouter);
 
