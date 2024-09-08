@@ -213,11 +213,36 @@ const ensureAuthenticated = (req, res, next) => {
 	res.status(401).json({ msg: "you are not authenticated" });
 };
 
+const setUpRole = asyncHandler(async (req, res, next) => {
+	// get the userId and role
+	const id = req.params.id;
+	// 2) check if the user are exist
+	let user = await userModel.findById(id);
+	if (!user) {
+		return next(new ApiError("Invalid user Id"), 401);
+	}
+	// 3) check if user is verified
+	if (!user.googleId && !user.linkedinId) {
+		return next(
+			new ApiError("User Not Associated neither Linkedin or Google"),
+			401
+		);
+	}
+	// 4) update User
+	user = await userModel.findByIdAndUpdate(id, req.body, {
+		new: true,
+	});
+	// 5) generate jwt
+	const token = createToken(user._id);
 
+	// 6) send response to client
+	res.status(200).json({ data: user, token });
+});
 module.exports = {
 	signUpController,
 	codeVerification,
 	signInController,
 	resendVerificationCode,
 	ensureAuthenticated,
+	setUpRole,
 };

@@ -10,6 +10,7 @@ const {
 	signInController,
 	resendVerificationCode,
 	ensureAuthenticated,
+	setUpRole,
 } = require("../controllers/auth.controller");
 
 const router = express.Router();
@@ -18,6 +19,7 @@ router.post("/signUp", signUpController);
 router.post("/verifyCode", codeVerification);
 router.post("/signIn", signInController);
 router.post("/resendVerifyCode", resendVerificationCode);
+router.post("/setUpRole/:id", setUpRole);
 
 // Oauth For : (Google - Linkedin )
 
@@ -100,18 +102,18 @@ router.get(
 		const user = await userModel.findOne({ email: req.user.email });
 		if (!user) {
 			// complete signUp
-			await userModel.create({
+			const data = await userModel.create({
 				...req.user,
 			});
-			res.redirect("/select-role");
+			res.status(200).json({ data, role: "not specified" });
 		} else if (!user.role) {
-			res.redirect("/select-role");
+			res.status(200).json({ data: user, role: "not specified" });
 		} else {
-			res.redirect(
-				user.role === "employer"
-					? "/employer-dashboard"
-					: "/job-seeker-dashboard"
-			);
+			// 1) generate jwt
+			const token = createToken(user._id);
+
+			// 2) send response to client
+			res.status(200).json({ data: user, token });
 		}
 	}
 );
@@ -175,18 +177,18 @@ router.get(
 		const user = await userModel.findOne({ email: req.user.email });
 		if (!user) {
 			// complete signUp
-			await userModel.create({
+			const data = await userModel.create({
 				...req.user,
 			});
-			res.redirect("/select-role");
+			res.status(200).json({ data, role: "not specified" });
 		} else if (!user.role) {
-			res.redirect("/select-role");
+			res.status(200).json({ data: user, role: "not specified" });
 		} else {
-			res.redirect(
-				user.role === "employer"
-					? "/employer-dashboard"
-					: "/job-seeker-dashboard"
-			);
+			// 1) generate jwt
+			const token = createToken(user._id);
+
+			// 2) send response to client
+			res.status(200).json({ data: user, token });
 		}
 	}
 );
