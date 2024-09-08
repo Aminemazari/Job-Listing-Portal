@@ -11,6 +11,8 @@ function App() {
       
     <Routes>
       <Route path="/SignUp" element={<SignUp/>}/>
+
+      <Route path="/" element={<SignUp/>}/>
       <Route path="/login" element={<LogIn></LogIn>}/>
       <Route path="/virification_Form" element={<Virification_Form></Virification_Form>}/>
       <Route path="/forgotpassword" element={<ForgotPassword></ForgotPassword>}/>
