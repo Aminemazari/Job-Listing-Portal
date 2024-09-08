@@ -43,6 +43,9 @@ const userSchema = new mongoose.Schema(
 		verifyCodeVerified: Boolean,
 		googleId: String,
 		linkedinId: String,
+		resetPasswordCode: String,
+		resetPasswordExpire: String,
+		passwordResetVerified: Boolean,
 	},
 	{
 		timestamps: true,

@@ -11,6 +11,9 @@ const {
 	resendVerificationCode,
 	ensureAuthenticated,
 	setUpRole,
+	forgetPassword,
+	verifyResetCode,
+	setNewPassword,
 } = require("../controllers/auth.controller");
 
 const router = express.Router();
@@ -20,9 +23,11 @@ router.post("/verifyCode", codeVerification);
 router.post("/signIn", signInController);
 router.post("/resendVerifyCode", resendVerificationCode);
 router.post("/setUpRole/:id", setUpRole);
+router.post("/forgetPassword", forgetPassword);
+router.post("/verifyResetCode", verifyResetCode);
+router.post("/setPassword", setNewPassword);
 
 // Oauth For : (Google - Linkedin )
-
 // 1-Google
 
 passport.use(
