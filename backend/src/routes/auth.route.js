@@ -14,6 +14,7 @@ const {
 	forgetPassword,
 	verifyResetCode,
 	setNewPassword,
+	getUserById,
 } = require("../controllers/auth.controller");
 
 const router = express.Router();
@@ -23,6 +24,7 @@ router.post("/verifyCode", codeVerification);
 router.post("/signIn", signInController);
 router.post("/resendVerifyCode", resendVerificationCode);
 router.post("/setUpRole/:id", setUpRole);
+router.get("/users/:id", getUserById);
 router.post("/forgetPassword", forgetPassword);
 router.post("/verifyResetCode", verifyResetCode);
 router.post("/setPassword", setNewPassword);
@@ -110,15 +112,21 @@ router.get(
 			const data = await userModel.create({
 				...req.user,
 			});
-			res.status(200).json({ data, role: "not specified" });
+			res
+				.status(200)
+				.redirect(`${process.env.CLIENT_HOST}/roleSetup?userId=${data._id}`);
 		} else if (!user.role) {
-			res.status(200).json({ data: user, role: "not specified" });
+			res
+				.status(200)
+				.redirect(`${process.env.CLIENT_HOST}/roleSetup?userId=${user._id}`);
 		} else {
 			// 1) generate jwt
 			const token = createToken(user._id);
 
 			// 2) send response to client
-			res.status(200).json({ data: user, token });
+			res
+				.status(200)
+				.redirect(`${process.env.CLIENT_HOST}/dashboard?token=${token}`);
 		}
 	}
 );
@@ -179,21 +187,28 @@ router.get(
 	async function (req, res) {
 		// Successful authentication, redirect .
 		// redirect weather first signup or logged in
+		console.log(req.user);
 		const user = await userModel.findOne({ email: req.user.email });
 		if (!user) {
 			// complete signUp
 			const data = await userModel.create({
 				...req.user,
 			});
-			res.status(200).json({ data, role: "not specified" });
+			res
+				.status(200)
+				.redirect(`${process.env.CLIENT_HOST}/roleSetup?userId=${data._id}`);
 		} else if (!user.role) {
-			res.status(200).json({ data: user, role: "not specified" });
+			res
+				.status(200)
+				.redirect(`${process.env.CLIENT_HOST}/roleSetup?userId=${user._id}`);
 		} else {
 			// 1) generate jwt
 			const token = createToken(user._id);
 
 			// 2) send response to client
-			res.status(200).json({ data: user, token });
+			res
+				.status(200)
+				.redirect(`${process.env.CLIENT_HOST}/dashboard?token=${token}`);
 		}
 	}
 );

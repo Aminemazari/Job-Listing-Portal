@@ -237,7 +237,9 @@ const setUpRole = asyncHandler(async (req, res, next) => {
 	const token = createToken(user._id);
 
 	// 6) send response to client
-	res.status(200).json({ data: user, token });
+	res
+		.status(200)
+		.redirect(`${process.env.CLIENT_HOST}/dashboard?token=${token}`);
 });
 
 // Forget Password
@@ -364,6 +366,14 @@ const setNewPassword = asyncHandler(async (req, res, next) => {
 		token,
 	});
 });
+const getUserById = asyncHandler(async (req, res) => {
+	const userId = req.params.id;
+	const user = await userModel.findById(userId);
+	if (!user) {
+		return next(new ApiError(`No user found with this id : ${userId}`));
+	}
+	res.status(200).json({ user });
+});
 module.exports = {
 	signUpController,
 	codeVerification,
@@ -374,4 +384,5 @@ module.exports = {
 	setNewPassword,
 	verifyResetCode,
 	forgetPassword,
+	getUserById,
 };
