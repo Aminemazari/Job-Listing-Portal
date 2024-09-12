@@ -1,0 +1,55 @@
+@import url("../../root.css");
+*{
+    margin: 0;
+    padding: 0;
+}
+.hero{
+    background-color: #fff;
+    padding: 0px 100px;
+}
+.main_countainer{
+    display: flex;
+    flex-direction: column;
+    gap:40px;
+    margin-top: 50px;
+}
+.title{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+}
+.job_search{
+    font-family: var(--font-family);
+    font-weight: 550;
+    font-size: 40px;
+    line-height: 100%;
+    color: #303030;
+}
+.search_for_your_desire{
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 100%;
+    color: #5e6670;
+}
+.Search_Result{
+    display: flex;
+    gap:40px;
+
+}
+.filter{
+    display: flex;
+    flex-direction: column;
+    gap:30px;
+}
+.jobOffers{
+    display: flex;
+    flex-wrap: wrap;
+    gap:30px;
+    justify-content: space-between;
+    overflow: auto;  
+    -webkit-scrollbar: none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    height: 904px;
+}

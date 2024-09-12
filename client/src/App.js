@@ -6,6 +6,7 @@ import Virification_Form from './Authentication/SignUp/Virification_Form.js';
 import ForgotPassword from './Authentication/LogIn/ForgotPassword';
 import { Route, BrowserRouter as Router , Routes } from 'react-router-dom'; 
 import {ConfigProvider} from 'antd';
+import FindJob from './Home/FindJob.js';
 function App() {
   return (
     <>
@@ -21,7 +22,7 @@ function App() {
     <Router>
       
     <Routes>
-      <Route path="/" element={<SignUp/>}/>
+      <Route path="/" element={<FindJob/>}/>
       <Route path="/SignUp" element={<SignUp/>}/>
       <Route path="/login" element={<LogIn></LogIn>}/>
       <Route path="/virification_Form" element={<Virification_Form></Virification_Form>}/>

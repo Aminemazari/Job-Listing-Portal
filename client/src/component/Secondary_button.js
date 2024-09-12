@@ -8,7 +8,7 @@ const Secondary_button = ({text,border,onclick}) => {
     justifyContent: "center",
     alignItems: "center",
     borderRadius: "var(--Interactive-border-radius---radius-i-sm, 12px)",
-    border: "1px solid var(--Main-goten, #682DFE)",
+    border: "1px solid var(--Main-goten, #6300B3)",
     color: "var(--Main-goten, #FFF)",
     textAlign: "center", // Use camelCase for text-align
     fontFeatureSettings: "'clig' off, 'liga' off", // Use camelCase for font-feature-settings
@@ -17,7 +17,7 @@ const Secondary_button = ({text,border,onclick}) => {
     fontStyle: "normal",
     fontWeight: 700,
     lineHeight: "24px",
-    background:"#682DFE",
+    background:"#6300B3",
   };
   if ( border ){
      customButtonStyle.border="1px solid var(--Main-goten, #FFF)";

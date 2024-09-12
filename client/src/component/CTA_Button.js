@@ -8,8 +8,8 @@ const CTA_Button = ({text,onclick}) => {
     justifyContent: "center",
     alignItems: "center",
     borderRadius: "var(--Interactive-border-radius---radius-i-sm, 12px)",
-    border: "1px solid var(--Main-piccolo, #682DFE)",
-    color: "#682DFE",
+    border: "1px solid var(--Main-piccolo, #6300B3)",
+    color: "#6300B3",
     textAlign: "center", // Use camelCase for text-align
     fontFeatureSettings: "'clig' off, 'liga' off", // Use camelCase for font-feature-settings
     fontFamily: "DM Sans",
