@@ -84,7 +84,16 @@ const handleChangePassword = (newValue) => {
 const handleChangeUserName = (newValue) => {
   setUserName(newValue);
 };
-
+const continueWithGoogle=async(e)=>{
+  e.preventDefault();
+  setLoading(true);
+  window.location.href = `${API_URL}/api/v1/auth/google/`;
+}
+const continueWithLinkdln=async(e)=>{
+  e.preventDefault();
+  setLoading(true);
+  window.location.href = `${API_URL}/api/v1/auth/linkedin`;
+}
 
 
 
@@ -189,8 +198,8 @@ classNames(
         <p className={style.or}>Or continue With</p>
 
         <section className={style.socialMedia}>
-          <button className={style.socailMediaButton}>  <img src={google}  /></button>
-          <button className={style.socailMediaButton}> <img src={linkdln}  /></button>
+          <button className={style.socailMediaButton} onClick={continueWithGoogle}>  <img src={google}  /></button>
+          <button className={style.socailMediaButton} onClick={continueWithLinkdln}> <img src={linkdln}  /></button>
         </section>
 
      </main>

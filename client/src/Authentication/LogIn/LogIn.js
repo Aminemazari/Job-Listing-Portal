@@ -8,7 +8,7 @@ import withGithub from "../assets/withGithub.svg"
 import withGoogle from "../assets/withGoogle.svg"
 import withLinkdln from "../assets/withLinkdln.svg"
 import logo from "../assets/WhiteLogo.svg" 
-
+import axios from 'axios';
 
 import { Navigate, useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box';
@@ -61,7 +61,19 @@ const LogIn = () => {
       }
      
         
-    }
+  }
+  const continueWithGoogle=async(e)=>{
+    e.preventDefault();
+    setLoading(true);
+    window.location.href = `${API_URL}/api/v1/auth/google/`;
+  }
+  const continueWithLinkdln=async(e)=>{
+    e.preventDefault();
+    setLoading(true);
+    window.location.href = `${API_URL}/api/v1/auth/linkedin`;
+  }
+  
+  
 
   const handleChangeEmail = (newValue) => {
     setStatus("");
@@ -115,8 +127,8 @@ const LogIn = () => {
         <p className={style.or}>Or continue With</p>
 
         <div className={style.socialMedia}>
-          <button className={style.socialImag}><img src={withGoogle} ></img></button>
-          <button className={style.socialImag}> <img src={withLinkdln} /></button>
+          <button className={style.socialImag}  onClick={continueWithGoogle}><img src={withGoogle} ></img></button>
+          <button className={style.socialImag} onClick={continueWithLinkdln}> <img src={withLinkdln} /></button>
         </div>
 
         </div>
