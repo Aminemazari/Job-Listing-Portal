@@ -1,17 +1,15 @@
 @import url("../../root.css");
 *{
-    margin: 0;
-    padding: 0;
+    margin:0;
+    padding:0;
 }
 .hero{
-    background-color: #fff;
     padding: 0px 100px;
-}
-.main_countainer{
+    background-color: #fff;
     display: flex;
     flex-direction: column;
     gap:40px;
-    margin-top: 50px;
+    
 }
 .title{
     display: flex;
@@ -32,24 +30,23 @@
     line-height: 100%;
     color: #5e6670;
 }
-.Search_Result{
-    display: flex;
-    gap:40px;
-
-}
-.filter{
+.inputCountainter{
     display: flex;
     flex-direction: column;
-    gap:30px;
+    gap:10px;
+    width: 100%;
 }
-.jobOffers{
+.inputTitle{
+    font-family: var(--font-family);
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 100%;
+    color: #303030;
+}
+.inputGroup{
     display: flex;
-    flex-wrap: wrap;
-    gap:30px;
     justify-content: space-between;
-    overflow: auto;  
-    -webkit-scrollbar: none;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    height: 904px;
+    width: 100%;
+    gap:40px;
+    align-items: center;
 }
