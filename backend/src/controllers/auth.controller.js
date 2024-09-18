@@ -147,6 +147,8 @@ const signInController = asyncHandler(async (req, res, next) => {
   // Storing generated token for future use in cookie
   res.cookie("jwt", token, {
     httpOnly: true, // To prevent XSS attacks
+    secure: false, // Set true when in production
+    maxAge: 24 * 60 * 60 * 1000, // 1 day
   });
 
   // 5) send response to client
@@ -240,6 +242,13 @@ const setUpRole = asyncHandler(async (req, res, next) => {
   });
   // 5) generate jwt
   const token = createToken(user._id);
+
+  // Storing generated token for future use in cookie
+  res.cookie("jwt", token, {
+    httpOnly: true, // To prevent XSS attacks
+    secure: false, // Set true when in production
+    maxAge: 24 * 60 * 60 * 1000, // 1 day
+  });
 
   // 6) send response to client
   res
@@ -366,6 +375,14 @@ const setNewPassword = asyncHandler(async (req, res, next) => {
 
   // 3) if everything is ok generate token
   const token = createToken(user._id);
+
+  // Storing generated token for future use in cookie
+  res.cookie("jwt", token, {
+    httpOnly: true, // To prevent XSS attacks
+    secure: false, // Set true when in production
+    maxAge: 24 * 60 * 60 * 1000, // 1 day
+  });
+
   res.status(200).json({
     success: true,
     token,

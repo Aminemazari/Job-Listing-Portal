@@ -5,9 +5,15 @@ const verifyToken = (req, res, next) => {
   const token = req.cookies.jwt; // Get token from cookie
 
   if (!token) {
-    return res
-      .status(403)
-      .json({ message: "Access denied. No token provided." });
+    // If no token and user object empty then return 403
+    if (!req.user)
+      return res
+        .status(403)
+        .json({
+          message: "Access denied. No token provided or Oauth provided",
+        });
+
+    return;
   }
 
   try {
