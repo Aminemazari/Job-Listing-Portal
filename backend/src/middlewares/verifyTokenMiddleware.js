@@ -20,8 +20,13 @@ const verifyToken = (req, res, next) => {
     // Verify the token using the secret key
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
-    // Attach the decoded token payload to req.user
-    req.user = decoded;
+    // Attach the decoded token payload to req.user if user_id exist
+    if (decoded.userId) req.user = decoded;
+    else {
+      return res.status(403).json({
+        message: "Access denied. No userId attached to Token",
+      });
+    }
 
     // Move to the next middleware or route
     next();
