@@ -1,13 +1,23 @@
 const asyncHandler = require("express-async-handler");
 const jobModel = require("../db/models/job.model");
+const userModel = require("../db/models/user.model");
 const ApiError = require("../utils/apiError");
 
 const postJobController = asyncHandler(async (req, res, next) => {
   // Get user-specific id for db operations
   const { userId } = req.user;
 
+  // Check if user is an employer
+  const user = await userModel.findById(userId);
+  const role = user.role;
+
+  if (role === "seeker") {
+    return res
+      .status(401)
+      .json({ message: "User not Authorised", success: false });
+  }
+
   // Get job information from request body to store in db
-  const role = "seeker";
   const {
     title,
     companyName,

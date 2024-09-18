@@ -1,11 +1,12 @@
 const mongoose = require("mongoose");
+const userModel = require("./user.model");
 
 const jobSchema = new mongoose.Schema(
   {
     userId: {
-      type: String,
+      type: mongoose.ObjectId,
       required: [true, "userId is required"],
-      trim: true,
+      ref: userModel,
     },
     title: {
       type: String,
