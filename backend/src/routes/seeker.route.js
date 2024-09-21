@@ -10,5 +10,5 @@ const { allowedTo, protect } = require("../controllers/auth.controller");
 
 router.use(protect, allowedTo("seeker"));
 router.route("/").post(createProfile);
-router.route("/:id").get(getUserProfile).put(updateProfile);
+router.route("/profile").get(getUserProfile).put(updateProfile);
 module.exports = router;

@@ -16,20 +16,22 @@ const createProfile = asyncHandler(async (req, res) => {
 });
 
 const updateProfile = asyncHandler(async (req, res, next) => {
-	const { id } = req.params;
-	const data = await Seeker.findById(id);
+	const data = await Seeker.findOne({ user_id: req.user.id });
 	if (!data) {
 		return next(new ApiError(`There is no Profile with this id ${id}`, 404));
 	}
-	const newData = await Seeker.findByIdAndUpdate(id, req.body, { new: true });
+	const newData = await Seeker.findByIdAndUpdate(data._id, req.body, {
+		new: true,
+	});
 	res.status(200).json({ data: newData });
 });
 
 const getUserProfile = asyncHandler(async (req, res, next) => {
-	const { id } = req.params;
-	const data = await Seeker.findById(id).populate("resume");
+	const data = await Seeker.findOne({ user_id: req.user.id }).populate(
+		"resume"
+	);
 	if (!data) {
-		return next(new ApiError(`There is no Profile with this id ${id}`, 404));
+		return next(new ApiError(`There is no Profile For this User`, 404));
 	}
 	res.status(200).json(data);
 });
