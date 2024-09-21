@@ -12,6 +12,8 @@ const dbConnection = require("./src/db/connect");
 const authRouter = require("./src/routes/auth.route");
 const jobRouter = require("./src/routes/job.route");
 const resumeRouter = require("./src/routes/resume.route");
+const employerRouter = require("./src/routes/employer.route");
+const seekerRouter = require("./src/routes/seeker.route");
 
 const port = process.env.PORT || 3000;
 // Set Up Global Middleware
@@ -44,6 +46,8 @@ app.get("/", (req, res) => {
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/job", jobRouter);
 app.use("/api/v1/resume", resumeRouter);
+app.use("/api/v1/employer", employerRouter);
+app.use("/api/v1/seeker", seekerRouter);
 
 // For Handling Unknown Endpoint
 app.all("*", (req, res, next) => {
