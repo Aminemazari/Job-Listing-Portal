@@ -1,9 +1,20 @@
 const express = require("express");
-const { postJobController } = require("../controllers/job.controller");
+const {
+	postJobController,
+	searchJob,
+	editJob,
+	deleteJob,
+	getJobById,
+} = require("../controllers/job.controller");
 const verifyToken = require("../middlewares/verifyTokenMiddleware");
-
+const { allowedTo, protect } = require("../controllers/auth.controller");
 const router = express.Router();
-
-router.post("/post-job", verifyToken, postJobController);
-
+router.use(protect);
+router.post("/post-job", allowedTo("employer"), postJobController);
+router.get("/", searchJob);
+router
+	.route("/:id")
+	.get(getJobById)
+	.put(allowedTo("employer"), editJob)
+	.delete(allowedTo("employer"), deleteJob);
 module.exports = router;
