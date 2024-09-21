@@ -14,6 +14,7 @@ const jobRouter = require("./src/routes/job.route");
 const resumeRouter = require("./src/routes/resume.route");
 const employerRouter = require("./src/routes/employer.route");
 const seekerRouter = require("./src/routes/seeker.route");
+const applicationRouter = require("./src/routes/application.route");
 
 const port = process.env.PORT || 3000;
 // Set Up Global Middleware
@@ -48,6 +49,7 @@ app.use("/api/v1/job", jobRouter);
 app.use("/api/v1/resume", resumeRouter);
 app.use("/api/v1/employer", employerRouter);
 app.use("/api/v1/seeker", seekerRouter);
+app.use("/api/v1/application", applicationRouter);
 
 // For Handling Unknown Endpoint
 app.all("*", (req, res, next) => {
