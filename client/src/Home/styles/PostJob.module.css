@@ -50,3 +50,10 @@
     gap:40px;
     align-items: center;
 }
+.element{
+    font-family: var(--font-family);
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+    color: #303030;
+}

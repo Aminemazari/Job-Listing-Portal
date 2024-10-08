@@ -1,0 +1,35 @@
+@import "../../root.css";
+.hero{
+
+
+}
+.countainerOne{
+  display: flex;
+  height: 596px;
+  margin-top: 15px;
+  align-items: center;
+  padding: 0px 100px;
+  background: linear-gradient(to right, #f5f7fa, #E2CCF2);}
+.fromSide{
+  display: flex;
+  flex-direction: column;
+  gap:30px;
+}
+.textDiv{
+  display: flex;
+  flex-direction: column;
+}
+.findJobText{
+    font-family: var(--font-family);
+    font-weight: 500;
+    font-size: 40px;
+    color: #303030;
+} 
+.subTitle{
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 100%;
+  color: #5e6670;
+}
+

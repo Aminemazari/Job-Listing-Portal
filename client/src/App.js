@@ -8,6 +8,7 @@ import { Route, BrowserRouter as Router , Routes } from 'react-router-dom';
 import {ConfigProvider} from 'antd';
 import FindJob from './Home/FindJob.js';
 import PostJob from './Home/PostJob.js';
+import Home from './Home/Home.js';
 function App() {
   return (
     <>
@@ -23,13 +24,15 @@ function App() {
     <Router>
       
     <Routes>
-      <Route path="/" element={<FindJob/>}/>
+      <Route path="/find-job" element={<FindJob/>}/>
       <Route path="/employers" element={<PostJob/>}/>
       <Route path="/SignUp" element={<SignUp/>}/>
       <Route path="/login" element={<LogIn></LogIn>}/>
       <Route path="/virification_Form" element={<Virification_Form></Virification_Form>}/>
       <Route path="/forgotpassword" element={<ForgotPassword></ForgotPassword>}/>
       <Route path="/roleSetup" element={<RoleSetup/>}/>
+      <Route path="/home" element={<Home/>}/>
+
       </Routes>
       </Router>
       </ConfigProvider>

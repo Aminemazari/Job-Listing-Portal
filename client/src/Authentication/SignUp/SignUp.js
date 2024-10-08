@@ -38,6 +38,7 @@ const SignUp = () => {
   };
 
 const SingUphandleClick = async (e)=>{
+  Navigate("/employers");
   e.preventDefault();
   setLoading(true);
   try{

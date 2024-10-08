@@ -4,7 +4,7 @@ import NavigationLinks from './NavigationLinks';
 import Bell from "./assets/Bell.svg";
 import { useNavigate } from 'react-router-dom';
 import API_URL from './API_URL';
-
+import logo from "../Home/assets/logo.svg"
 
 const NavBar = ({ home, findJob, employers, admin, aboutUs, picture }) => {
   const Navigate = useNavigate();
@@ -33,7 +33,8 @@ const NavBar = ({ home, findJob, employers, admin, aboutUs, picture }) => {
 
   return (
     <div className={style.NavBar}>
-      <button onClick={handleLogo} className={style.hireMeButton}>HireMe</button> 
+      <button onClick={handleLogo} className={style.hireMeButton}>
+        <img src={logo}/> HireMe</button> 
       <div className={style.Navigation}>
         <NavigationLinks text={"Home"} onclick={homeClicked} clicked={home} />
         <NavigationLinks text={"find Job"} onclick={findJobClicked} clicked={findJob} />
