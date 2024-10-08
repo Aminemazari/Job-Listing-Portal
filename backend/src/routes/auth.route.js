@@ -5,16 +5,16 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const LinkedInStrategy = require("passport-linkedin-oauth2").Strategy;
 const axios = require("axios");
 const {
-	signUpController,
-	codeVerification,
-	signInController,
-	resendVerificationCode,
-	ensureAuthenticated,
-	setUpRole,
-	forgetPassword,
-	verifyResetCode,
-	setNewPassword,
-	getUserById,
+  signUpController,
+  codeVerification,
+  signInController,
+  resendVerificationCode,
+  ensureAuthenticated,
+  setUpRole,
+  forgetPassword,
+  verifyResetCode,
+  setNewPassword,
+  getUserById,
 } = require("../controllers/auth.controller");
 
 const router = express.Router();
@@ -33,184 +33,198 @@ router.post("/setPassword", setNewPassword);
 // 1-Google
 
 passport.use(
-	new GoogleStrategy(
-		{
-			clientID: process.env.CLIENT_ID,
-			clientSecret: process.env.CLIENT_SECRET,
-			callbackURL: process.env.GOOGLE_CALLBACK_URL,
-		},
-		async function (req, accessToken, refreshToken, profile, done) {
-			try {
-				let user = await userModel.findOne({
-					googleId: profile.id,
-				});
-				if (!user) {
-					// check if email isn't used in other account
-					user = await userModel.findOne({ email: profile.emails[0].value });
-					if (user) {
-						return done(null, {
-							message: `${profile.emails[0].value} Email Already In use`,
-						});
-					}
+  new GoogleStrategy(
+    {
+      clientID: process.env.CLIENT_ID,
+      clientSecret: process.env.CLIENT_SECRET,
+      callbackURL: process.env.GOOGLE_CALLBACK_URL,
+    },
+    async function (req, accessToken, refreshToken, profile, done) {
+      try {
+        let user = await userModel.findOne({
+          googleId: profile.id,
+        });
+        if (!user) {
+          // check if email isn't used in other account
+          user = await userModel.findOne({ email: profile.emails[0].value });
+          if (user) {
+            return done(null, {
+              message: `${profile.emails[0].value} Email Already In use`,
+            });
+          }
 
-					// we will create user with this credential
-					user = {
-						username: profile.displayName,
-						email: profile.emails ? profile.emails[0].value : null, // Check if emails array exists
-						profileImage: profile.photos
-							? profile.photos[0].value
-							: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png", // Check if photos array exists
-						googleId: profile.id,
-					};
-				}
-				req.user = user;
-				return done(null, user); // Return the user instance
-			} catch (error) {
-				return done(error); // Pass any error to the done callback
-			}
-		}
-	)
+          // we will create user with this credential
+          user = {
+            username: profile.displayName,
+            email: profile.emails ? profile.emails[0].value : null, // Check if emails array exists
+            profileImage: profile.photos
+              ? profile.photos[0].value
+              : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png", // Check if photos array exists
+            googleId: profile.id,
+          };
+        }
+        req.user = user;
+        return done(null, user); // Return the user instance
+      } catch (error) {
+        return done(error); // Pass any error to the done callback
+      }
+    }
+  )
 );
 passport.serializeUser(async (user, done) => {
-	const oldUser = await userModel.findOne({ email: user.email });
-	if (oldUser) user = oldUser;
-	done(null, user);
+  const oldUser = await userModel.findOne({ email: user.email });
+  if (oldUser) user = oldUser;
+  done(null, user);
 });
 
 passport.deserializeUser(async (user, done) => {
-	try {
-		done(null, user);
-	} catch (error) {
-		done(error);
-	}
+  try {
+    done(null, user);
+  } catch (error) {
+    done(error);
+  }
 });
 router.get("/profile", ensureAuthenticated, (req, res) => {
-	res.json({ user: req.user });
+  res.json({ user: req.user });
 });
 router.get("/logout", function (req, res, next) {
-	req.logout(function (err) {
-		if (err) {
-			return next(err);
-		}
-		res.redirect("/api/v1/auth/profile");
-	});
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/api/v1/auth/profile");
+  });
 });
 
 router.get(
-	"/google",
-	passport.authenticate("google", { scope: ["profile", "email"] })
+  "/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
 );
 router.get(
-	"/google/callback",
-	passport.authenticate("google", { failureRedirect: "/" }),
-	async function (req, res) {
-		// Successful authentication, redirect .
-		// redirect weather first signup or logged in
-		const user = await userModel.findOne({ email: req.user.email });
-		if (!user) {
-			// complete signUp
-			const data = await userModel.create({
-				...req.user,
-			});
-			res
-				.status(200)
-				.redirect(`${process.env.CLIENT_HOST}/roleSetup?userId=${data._id}`);
-		} else if (!user.role) {
-			res
-				.status(200)
-				.redirect(`${process.env.CLIENT_HOST}/roleSetup?userId=${user._id}`);
-		} else {
-			// 1) generate jwt
-			const token = createToken(user._id);
+  "/google/callback",
+  passport.authenticate("google", { failureRedirect: "/" }),
+  async function (req, res) {
+    // Successful authentication, redirect .
+    // redirect weather first signup or logged in
+    const user = await userModel.findOne({ email: req.user.email });
+    if (!user) {
+      // complete signUp
+      const data = await userModel.create({
+        ...req.user,
+      });
+      res
+        .status(200)
+        .redirect(`${process.env.CLIENT_HOST}/roleSetup?userId=${data._id}`);
+    } else if (!user.role) {
+      res
+        .status(200)
+        .redirect(`${process.env.CLIENT_HOST}/roleSetup?userId=${user._id}`);
+    } else {
+      // 1) generate jwt
+      const token = createToken(user._id);
 
-			// 2) send response to client
-			res
-				.status(200)
-				.redirect(`${process.env.CLIENT_HOST}/dashboard?token=${token}`);
-		}
-	}
+      // Storing generated token for future use in cookie
+      res.cookie("jwt", token, {
+        httpOnly: true, // To prevent XSS attacks
+        secure: false, // Set true when in production
+        maxAge: 24 * 60 * 60 * 1000, // 1 day
+      });
+
+      // 2) send response to client
+      res
+        .status(200)
+        .redirect(`${process.env.CLIENT_HOST}/dashboard?token=${token}`);
+    }
+  }
 );
 
 // 1-Linkedin
 passport.use(
-	new LinkedInStrategy(
-		{
-			clientID: process.env.LINKEDIN_KEY,
-			clientSecret: process.env.LINKEDIN_SECRET,
-			callbackURL: process.env.LINKEDIN_CALLBACK_URL,
-			scope: ["profile", "email", "openid"],
-			state: true,
-		},
-		async function (req, accessToken, refreshToken, profile, done) {
-			try {
-				let user = await userModel.findOne({
-					linkedinId: profile.id,
-				});
-				if (!user) {
-					// check if email isn't used in other account
-					user = await userModel.findOne({ email: profile.email });
-					if (user) {
-						return done(null, {
-							message: `${profile.email} Email Already In use`,
-						});
-					}
+  new LinkedInStrategy(
+    {
+      clientID: process.env.LINKEDIN_KEY,
+      clientSecret: process.env.LINKEDIN_SECRET,
+      callbackURL: process.env.LINKEDIN_CALLBACK_URL,
+      scope: ["profile", "email", "openid"],
+      state: true,
+    },
+    async function (req, accessToken, refreshToken, profile, done) {
+      try {
+        let user = await userModel.findOne({
+          linkedinId: profile.id,
+        });
+        if (!user) {
+          // check if email isn't used in other account
+          user = await userModel.findOne({ email: profile.email });
+          if (user) {
+            return done(null, {
+              message: `${profile.email} Email Already In use`,
+            });
+          }
 
-					// we will create user with this credential
-					user = {
-						username: profile.displayName,
-						email: profile.email ? profile.email : null, // Check if emails array exists
-						profileImage: profile.picture
-							? profile.picture
-							: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png", // Check if photos array exists
-						linkedinId: profile.id,
-					};
-				}
-				req.user = user;
+          // we will create user with this credential
+          user = {
+            username: profile.displayName,
+            email: profile.email ? profile.email : null, // Check if emails array exists
+            profileImage: profile.picture
+              ? profile.picture
+              : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png", // Check if photos array exists
+            linkedinId: profile.id,
+          };
+        }
+        req.user = user;
 
-				return done(null, user); // Return the user instance
-			} catch (error) {
-				return done(error); // Pass any error to the done callback
-			}
-		}
-	)
+        return done(null, user); // Return the user instance
+      } catch (error) {
+        return done(error); // Pass any error to the done callback
+      }
+    }
+  )
 );
 
 router.get(
-	"/linkedin",
-	passport.authenticate("linkedin", { scope: ["profile", "email", "openid"] })
+  "/linkedin",
+  passport.authenticate("linkedin", { scope: ["profile", "email", "openid"] })
 );
 router.get(
-	"/linkedin/callback",
-	passport.authenticate("linkedin", {
-		failureRedirect: "/",
-	}),
-	async function (req, res) {
-		// Successful authentication, redirect .
-		// redirect weather first signup or logged in
-		console.log(req.user);
-		const user = await userModel.findOne({ email: req.user.email });
-		if (!user) {
-			// complete signUp
-			const data = await userModel.create({
-				...req.user,
-			});
-			res
-				.status(200)
-				.redirect(`${process.env.CLIENT_HOST}/roleSetup?userId=${data._id}`);
-		} else if (!user.role) {
-			res
-				.status(200)
-				.redirect(`${process.env.CLIENT_HOST}/roleSetup?userId=${user._id}`);
-		} else {
-			// 1) generate jwt
-			const token = createToken(user._id);
+  "/linkedin/callback",
+  passport.authenticate("linkedin", {
+    failureRedirect: "/",
+  }),
+  async function (req, res) {
+    // Successful authentication, redirect .
+    // redirect weather first signup or logged in
+    console.log(req.user);
+    const user = await userModel.findOne({ email: req.user.email });
+    if (!user) {
+      // complete signUp
+      const data = await userModel.create({
+        ...req.user,
+      });
+      res
+        .status(200)
+        .redirect(`${process.env.CLIENT_HOST}/roleSetup?userId=${data._id}`);
+    } else if (!user.role) {
+      res
+        .status(200)
+        .redirect(`${process.env.CLIENT_HOST}/roleSetup?userId=${user._id}`);
+    } else {
+      // 1) generate jwt
+      const token = createToken(user._id);
 
-			// 2) send response to client
-			res
-				.status(200)
-				.redirect(`${process.env.CLIENT_HOST}/dashboard?token=${token}`);
-		}
-	}
+      // Storing generated token for future use in cookie
+      res.cookie("jwt", token, {
+        httpOnly: true, // To prevent XSS attacks
+        secure: false, // Set true when in production
+        maxAge: 24 * 60 * 60 * 1000, // 1 day
+      });
+
+      // 2) send response to client
+      res
+        .status(200)
+        .redirect(`${process.env.CLIENT_HOST}/dashboard?token=${token}`);
+    }
+  }
 );
 
 module.exports = router;

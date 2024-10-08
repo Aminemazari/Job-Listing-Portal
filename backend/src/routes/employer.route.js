@@ -1,0 +1,14 @@
+const express = require("express");
+const { uploadFile } = require("../middlewares/uploadResume");
+const {
+	getUserProfile,
+	updateProfile,
+	createProfile,
+} = require("../controllers/employer.controller");
+const router = express.Router();
+const { allowedTo, protect } = require("../controllers/auth.controller");
+
+router.use(protect, allowedTo("employer"));
+router.route("/").post(createProfile);
+router.route("/profile").get(getUserProfile).put(updateProfile);
+module.exports = router;

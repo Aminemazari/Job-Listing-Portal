@@ -9,6 +9,7 @@ const ApiError = require("../utils/apiError");
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 /*
 @desc Sign up new user
 @route /api/auth/signup
@@ -144,6 +145,13 @@ const signInController = asyncHandler(async (req, res, next) => {
 	// 4) generate jwt
 	const token = createToken(user._id);
 
+	// Storing generated token for future use in cookie
+	res.cookie("jwt", token, {
+		httpOnly: true, // To prevent XSS attacks
+		secure: false, // Set true when in production
+		maxAge: 24 * 60 * 60 * 1000, // 1 day
+	});
+
 	// 5) send response to client
 	res.status(200).json({ data: user, token });
 });
@@ -235,6 +243,13 @@ const setUpRole = asyncHandler(async (req, res, next) => {
 	});
 	// 5) generate jwt
 	const token = createToken(user._id);
+
+	// Storing generated token for future use in cookie
+	res.cookie("jwt", token, {
+		httpOnly: true, // To prevent XSS attacks
+		secure: false, // Set true when in production
+		maxAge: 24 * 60 * 60 * 1000, // 1 day
+	});
 
 	// 6) send response to client
 	res
@@ -361,6 +376,14 @@ const setNewPassword = asyncHandler(async (req, res, next) => {
 
 	// 3) if everything is ok generate token
 	const token = createToken(user._id);
+
+	// Storing generated token for future use in cookie
+	res.cookie("jwt", token, {
+		httpOnly: true, // To prevent XSS attacks
+		secure: false, // Set true when in production
+		maxAge: 24 * 60 * 60 * 1000, // 1 day
+	});
+
 	res.status(200).json({
 		success: true,
 		token,
@@ -374,6 +397,58 @@ const getUserById = asyncHandler(async (req, res) => {
 	}
 	res.status(200).json({ user });
 });
+
+const protect = asyncHandler(async (req, res, next) => {
+	// 1) check if token exist
+	let token;
+	if (
+		req.headers.authorization &&
+		req.headers.authorization.startsWith("Bearer")
+	) {
+		token = req.headers.authorization.split(" ")[1];
+	}
+	if (!token)
+		return next(
+			new ApiError(
+				"You are not log in , Please log in to access to this route ",
+				401
+			)
+		);
+
+	// 2) verify the token (no changes happen , expired token ) :: if change happen in the payload or the token is expired
+	const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+	// 3) verify if the user exist in database (this step is important when user is deleted by admin he also has the ability to access route because have the token )
+
+	const user = await userModel.findById(decoded.userId);
+	if (!user) {
+		return next(
+			new ApiError(
+				"The user that belong to this token has no longer exist ",
+				401
+			)
+		);
+	}
+	req.user = user;
+	next();
+});
+
+// @desc "authorization"
+
+const allowedTo = (
+	...roles // when we access a data of function that is outer  of function we call it (Closure)
+) =>
+	// 1) access roles ;
+	// 2) access user register ;
+	asyncHandler(async (req, res, next) => {
+		if (!roles.includes(req.user.role)) {
+			console.log(req.user.role);
+			return next(
+				new ApiError("You are not allowed to access this route ", 403)
+			);
+		}
+		next();
+	});
 module.exports = {
 	signUpController,
 	codeVerification,
@@ -385,4 +460,6 @@ module.exports = {
 	verifyResetCode,
 	forgetPassword,
 	getUserById,
+	allowedTo,
+	protect,
 };

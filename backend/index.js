@@ -3,12 +3,18 @@ const app = express();
 const morgan = require("morgan");
 const cors = require("cors");
 const passport = require("passport");
+const cookieParser = require("cookie-parser");
 
 const globalError = require("./src/middlewares/errorMiddleware");
 const session = require("express-session");
 const ApiError = require("./src/utils/apiError");
 const dbConnection = require("./src/db/connect");
 const authRouter = require("./src/routes/auth.route");
+const jobRouter = require("./src/routes/job.route");
+const resumeRouter = require("./src/routes/resume.route");
+const employerRouter = require("./src/routes/employer.route");
+const seekerRouter = require("./src/routes/seeker.route");
+const applicationRouter = require("./src/routes/application.route");
 
 const port = process.env.PORT || 3000;
 // Set Up Global Middleware
@@ -16,6 +22,7 @@ const port = process.env.PORT || 3000;
 // Enable different domain to access your application
 app.use(cors());
 app.options("*", cors());
+app.use(cookieParser());
 app.use(express.json());
 
 if (process.env.NODE_ENV === "development") {
@@ -38,6 +45,11 @@ app.get("/", (req, res) => {
 	res.send("Home");
 });
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/job", jobRouter);
+app.use("/api/v1/resume", resumeRouter);
+app.use("/api/v1/employer", employerRouter);
+app.use("/api/v1/seeker", seekerRouter);
+app.use("/api/v1/application", applicationRouter);
 
 // For Handling Unknown Endpoint
 app.all("*", (req, res, next) => {
