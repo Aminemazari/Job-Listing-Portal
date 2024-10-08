@@ -26,7 +26,7 @@ const LogIn = () => {
     setAnimate(true); // Trigger animation on mount
 }, []);
   const loginClickHandler = async (e) => {
-    Navigate("/employers")
+    Navigate("/home");
     e.preventDefault();
     setLoading(true);
 

@@ -101,7 +101,7 @@ h1{
   margin-top: 70px;
   display: flex;
   flex-direction: column;
-  gap:30px;
+  gap:40px;
 }
 .linesAndTitleInTheMidle{
   width: 100%;
@@ -126,5 +126,7 @@ h1{
 .campanies{
   display: flex;
   align-items: center;
+  justify-content: space-around;
+
   width: 100%;
 }

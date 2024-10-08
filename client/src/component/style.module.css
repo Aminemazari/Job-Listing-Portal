@@ -396,3 +396,58 @@
   display: flex;
   align-items: center;
 }
+.footer{
+  display: flex;
+  flex-direction: column;
+  gap:50px;
+  margin-top:100px ;
+  margin-bottom: 10px;
+  padding:0px 100px;
+  width:100% ;
+}
+.footerCountainer{
+  display: flex;
+  width:100% ;
+  justify-content: space-between;
+}
+.footerSubCountainer{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.callNow{
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 100%;
+  color: #5e6670;
+}
+.number{
+  font-family: var(--font-family);
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 100%;
+  color: #ae71db;
+}
+.footerSubTitle{
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  color: #767f8c;
+}
+.footerTitle{
+  margin-bottom: 10px;
+  font-family: var(--font-family);
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 100%;
+  color: #6300b3;
+}
+.reserved{
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 100%;
+  color: #b781df;
+}

@@ -5,7 +5,7 @@ import Bell from "./assets/Bell.svg";
 import { useNavigate } from 'react-router-dom';
 import API_URL from './API_URL';
 import logo from "../Home/assets/logo.svg"
-
+import avatar from "./assets/43.svg"
 const NavBar = ({ home, findJob, employers, admin, aboutUs, picture }) => {
   const Navigate = useNavigate();
 
@@ -47,7 +47,7 @@ const NavBar = ({ home, findJob, employers, admin, aboutUs, picture }) => {
           </button>
        
             <button onClick={"handleButtonClick"} style={{backgroundColor:"transparent",border:"none"}}>
-              <img src={picture} className={style.profilePicsNavBar} />
+              <img src={avatar} className={style.profilePicsNavBar} />
             </button>
             
       </section>

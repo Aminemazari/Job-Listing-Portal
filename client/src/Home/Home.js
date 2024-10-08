@@ -12,7 +12,7 @@ import microsoftLogo from "./assets/pngwing.com 1.svg"
 import flipkartLogo from "./assets/pngwing.com (3).svg"
 import youtubeLogo from "./assets/pngwing.com (2) 1.svg"
 import ibmLogo from "./assets/pngwing.com (4) 1.svg"
-
+import Footer from '../component/Footer'
 const Home = () => {
   return (
     <div className={style.hero}>
@@ -40,8 +40,8 @@ const Home = () => {
           <p className={style.subTitle} style={{marginTop:"-10px"}}>Choose jobs from the top employers and apply for the same.</p>
           <div className={style.jobPost}>
           <JobOfferCard  title={"Technical Support Specialist"} type={"Part-time"}  min={"20,000 INR"} max={"25,000 INR"} campany={"Google Inc."} picture={googleIcon} location={"New York,USA"} />
-          <JobOfferCard  title={"Technical Support Specialist"} type={"Part-time"}  min={"20,000 INR"} max={"25,000 INR"} campany={"Google Inc."} picture={appleIcon} location={"New York,USA"} />
-          <JobOfferCard  title={"Technical Support Specialist"} type={"Part-time"}  min={"20,000 INR"} max={"25,000 INR"} campany={"Google Inc."} picture={intelIcon} location={"New York,USA"} />
+          <JobOfferCard  title={"Senior UI/UX Designer"} type={"Full-time"}  min={"$30,000"} max={"$55,000"} campany={"Apple"} picture={appleIcon} location={"New York,USA"} />
+          <JobOfferCard  title={"Marketing Officer"} type={"Part-time"}  min={"20,000 INR"} max={"25,000 INR"} campany={"Intel Corp"} picture={intelIcon} location={"New York,USA"} />
           </div>
           <p className={style.viewAll}>View all</p>
         </section>
@@ -60,6 +60,7 @@ const Home = () => {
 
           </div>
         </div>
+        <Footer/>
     </div>
   )
 }
