@@ -17,6 +17,8 @@ function App() {
      token: {
        // Seed Token
        colorPrimary: '#6300B3',
+       fontFamily: '"Poppins", sans-serif', // Use Poppins font
+       
        // Alias Token
      },
    }}
